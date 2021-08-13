@@ -42,9 +42,10 @@ class LLL_Net(nn.Module):
         corresponding offsets
         """
         self.heads.append(nn.Linear(self.out_size, num_outputs))
-        # we re-compute instead of append in case an approach makes changes to the heads
-        self.task_cls = torch.tensor([head.out_features for head in self.heads])
-        self.task_offset = torch.cat([torch.LongTensor(1).zero_(), self.task_cls.cumsum(0)[:-1]])
+        with torch.no_grad():
+            # we re-compute instead of append in case an approach makes changes to the heads
+            self.task_cls = torch.tensor([head.out_features for head in self.heads])
+            self.task_offset = torch.cat([torch.LongTensor(1).zero_(), self.task_cls.cumsum(0)[:-1]])
 
     def forward(self, x, return_features=False):
         """Applies the forward pass

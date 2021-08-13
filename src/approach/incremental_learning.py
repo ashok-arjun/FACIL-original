@@ -6,6 +6,8 @@ from argparse import ArgumentParser
 from loggers.exp_logger import ExperimentLogger
 from datasets.exemplars_dataset import ExemplarsDataset
 
+from torchviz import make_dot
+
 
 class Inc_Learning_Appr:
     """Basic class for implementing incremental learning approaches"""

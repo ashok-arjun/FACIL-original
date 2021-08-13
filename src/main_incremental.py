@@ -131,20 +131,6 @@ def main(argv=None):
     #     self.C.to(self.device)
     ####################################################################################################################
 
-    # Args -- Network
-    from networks.network import LLL_Net
-    if args.network in tvmodels:  # torchvision models
-        tvnet = getattr(importlib.import_module(name='torchvision.models'), args.network)
-        if args.network == 'googlenet':
-            init_model = tvnet(pretrained=args.pretrained, aux_logits=False)
-        else:
-            init_model = tvnet(pretrained=args.pretrained)
-        set_tvmodel_head_var(init_model)
-    else:  # other models declared in networks package's init
-        net = getattr(importlib.import_module(name='networks'), args.network)
-        # WARNING: fixed to pretrained False for other model (non-torchvision)
-        init_model = net(pretrained=False)
-
     # Args -- Continual Learning Approach
     from approach.incremental_learning import Inc_Learning_Appr
     Appr = getattr(importlib.import_module(name='approach.' + args.approach), 'Appr')
@@ -200,6 +186,22 @@ def main(argv=None):
     if args.use_valid_only:
         tst_loader = val_loader
     max_task = len(taskcla) if args.stop_at_task == 0 else args.stop_at_task
+
+    utils.seed_everything(seed=args.seed)
+
+    # Args -- Network
+    from networks.network import LLL_Net
+    if args.network in tvmodels:  # torchvision models
+        tvnet = getattr(importlib.import_module(name='torchvision.models'), args.network)
+        if args.network == 'googlenet':
+            init_model = tvnet(pretrained=args.pretrained, aux_logits=False)
+        else:
+            init_model = tvnet(pretrained=args.pretrained)
+        set_tvmodel_head_var(init_model)
+    else:  # other models declared in networks package's init
+        net = getattr(importlib.import_module(name='networks'), args.network)
+        # WARNING: fixed to pretrained False for other model (non-torchvision)
+        init_model = net(pretrained=False)
 
     # Network and Approach instances
     utils.seed_everything(seed=args.seed)
