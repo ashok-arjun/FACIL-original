@@ -21,6 +21,9 @@ def get_loaders(datasets, num_tasks, nc_first_task, batch_size, num_workers, pin
         # get configuration for current dataset
         dc = dataset_config[cur_dataset]
 
+        print("Dataset: ", cur_dataset)
+        print(dc)
+
         # transformations
         trn_transform, tst_transform = get_transforms(resize=dc['resize'],
                                                       pad=dc['pad'],

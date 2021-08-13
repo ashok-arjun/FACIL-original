@@ -3,9 +3,10 @@ from torchvision import models
 from .lenet import LeNet
 from .vggnet import VggNet
 from .resnet32 import resnet32
+from .alexnet import alexnet
 
 # available torchvision models
-tvmodels = ['alexnet',
+tvmodels = [
             'densenet121', 'densenet169', 'densenet201', 'densenet161',
             'googlenet',
             'inception_v3',
@@ -17,7 +18,7 @@ tvmodels = ['alexnet',
             'wide_resnet50_2', 'wide_resnet101_2'
             ]
 
-allmodels = tvmodels + ['resnet32', 'LeNet', 'VggNet']
+allmodels = tvmodels + ['resnet32', 'LeNet', 'VggNet', 'alexnet']
 
 
 def set_tvmodel_head_var(model):

@@ -1,6 +1,6 @@
 from os.path import join
 
-_BASE_DATA_PATH = "../data"
+_BASE_DATA_PATH = "/DATA/arjun_ashok/files/lifelong/data"
 
 dataset_config = {
     'mnist': {
@@ -8,7 +8,7 @@ dataset_config = {
         'normalize': ((0.1307,), (0.3081,)),
         # Use the next 3 lines to use MNIST with a 3x32x32 input
         # 'extend_channel': 3,
-        # 'pad': 2,
+        # 'resize': 32,
         # 'normalize': ((0.1,), (0.2752,))    # values including padding
     },
     'svhn': {
@@ -23,7 +23,7 @@ dataset_config = {
         'resize': None,
         'pad': 4,
         'crop': 32,
-        'flip': True,
+        'flip': False,
         'normalize': ((0.5071, 0.4866, 0.4409), (0.2009, 0.1984, 0.2023))
     },
     'cifar100_icarl': {

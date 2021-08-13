@@ -14,6 +14,7 @@ from datasets.dataset_config import dataset_config
 from last_layer_analysis import last_layer_analysis
 from networks import tvmodels, allmodels, set_tvmodel_head_var
 
+import wandb
 
 def main(argv=None):
     tstart = time.time()
@@ -23,13 +24,13 @@ def main(argv=None):
     # miscellaneous args
     parser.add_argument('--gpu', type=int, default=0,
                         help='GPU (default=%(default)s)')
-    parser.add_argument('--results-path', type=str, default='../results',
+    parser.add_argument('--results-path', type=str, default='./results',
                         help='Results path (default=%(default)s)')
     parser.add_argument('--exp-name', default=None, type=str,
                         help='Experiment name (default=%(default)s)')
     parser.add_argument('--seed', type=int, default=0,
                         help='Random seed (default=%(default)s)')
-    parser.add_argument('--log', default=['disk'], type=str, choices=['disk', 'tensorboard'],
+    parser.add_argument('--log', default=['disk', 'wandb'], type=str, choices=['disk', 'tensorboard', 'wandb'],
                         help='Loggers used (disk, tensorboard) (default=%(default)s)', nargs='*', metavar="LOGGER")
     parser.add_argument('--save-models', action='store_true',
                         help='Save trained models (default=%(default)s)')
@@ -42,7 +43,7 @@ def main(argv=None):
                         help='Dataset or datasets used (default=%(default)s)', nargs='+', metavar="DATASET")
     parser.add_argument('--num-workers', default=4, type=int, required=False,
                         help='Number of subprocesses to use for dataloader (default=%(default)s)')
-    parser.add_argument('--pin-memory', default=False, type=bool, required=False,
+    parser.add_argument('--pin-memory', default=True, type=bool, required=False,
                         help='Copy Tensors into CUDA pinned memory before returning them (default=%(default)s)')
     parser.add_argument('--batch-size', default=64, type=int, required=False,
                         help='Number of samples per batch to load (default=%(default)s)')
@@ -101,6 +102,10 @@ def main(argv=None):
                        lr_patience=args.lr_patience, clipgrad=args.clipping, momentum=args.momentum,
                        wd=args.weight_decay, multi_softmax=args.multi_softmax, wu_nepochs=args.warmup_nepochs,
                        wu_lr_factor=args.warmup_lr_factor, fix_bn=args.fix_bn, eval_on_train=args.eval_on_train)
+
+
+    if "wandb" in args.log:
+        wandb.init(project="FACIL", entity="arjunashok")
 
     if args.no_cudnn_deterministic:
         print('WARNING: CUDNN Deterministic will be disabled.')
