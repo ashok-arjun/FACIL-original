@@ -105,7 +105,7 @@ def main(argv=None):
 
 
     if "wandb" in args.log:
-        wandb.init(project="FACIL", entity="arjunashok")
+        wandb.init(project="FACIL-original", entity="arjunashok")
 
     if args.no_cudnn_deterministic:
         print('WARNING: CUDNN Deterministic will be disabled.')
